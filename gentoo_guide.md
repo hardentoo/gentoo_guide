@@ -70,7 +70,79 @@
 
 Итак, чтобы установить gentoo нам необходима gentoo!
 
+#### Подготовка диска и установка нужных пакетов
+
+* добавим в файл /etc/portage/package.accept_keywords следующие строки
+
+app-misc/pax-utils ~amd64
+sys-kernel/genkernel ~amd64
+sys-kernel/spl ~amd64
+sys-fs/zfs-kmod ~amd64
+sys-fs/zfs ~amd64
+
+Здесь
+
+app-misc/pax-utils --- ELF utils that can check files for security relevant properties
+sys-kernel/genkernel --- Gentoo automatic kernel building scripts
+sys-kernel/spl --- The Solaris Porting Layer is a Linux kernel module which provides many of the Solaris kernel APIs
+sys-fs/zfs-kmod --- Linux ZFS kernel module for sys-fs/zfs
+sys-fs/zfs --- Userland utilities for ZFS Linux kernel module
+
+Если portage ругается на блокироку zfs и genkernel, значит надо поставить genkernel новее, так как он понимает zfs с определенной версии. Именно поэтому мы добавили ~amd64 для genkernel в
+package.accept_keywords.
+
+#### Установка xen
+
+```bash
+emerge xen xen-tools
+```
 
 ```bash
 grub2-install --modules="linux crypto search_fs_uuid luks lvm" --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=gentoo --recheck --debug
 ```
+
+### Готовим раздел для установки
+
+Делаем
+
+```bash
+Gentoo# modprobe zfs
+```
+
+Смотрим с помощью lsmod и dmesg | tail -50, что все удачно.
+
+```bash
+Gentoo# lsmod
+Module                  Size  Used by
+zfs                  3317760  0
+zunicode              331776  1 zfs
+zavl                   16384  1 zfs
+icp                   245760  1 zfs
+zcommon                65536  1 zfs
+znvpair                73728  2 zcommon,zfs
+spl                    98304  4 znvpair,zcommon,zfs,icp
+```
+
+```bash
+Gentoo# dmesg | tail -50
+[123818.135472] SPL: Loaded module v0.7.3-r0-gentoo
+[123818.138536] znvpair: module license 'CDDL' taints kernel.
+[123818.138539] Disabling lock debugging due to kernel taint
+[123820.052112] device: 'zfs': device_add
+[123820.052175] PM: Adding info for No Bus:zfs
+[123820.052547] ZFS: Loaded module v0.7.3-r0-gentoo, ZFS pool version 5000, ZFS filesystem version 5
+```
+
+Давайте посмотрим текущее разбиение диска
+
+![Gentoo Screenshots](https://github.com/hardentoo/gentoo_guide/blob/master/2017-11-25-193528_1920x1080_scrot.png)
+
+Мы удалим разделы /dev/sda5, /dev/sda6, /dev/sda7, и в получившемся свободном пространстве создадим раздел.
+
+Но предварительно, мы в файле /etc/conf.d/dmcrypt закомментируем строки, создающие swap раздел, так как нумерация gpt разделов изменится и мы не хотим потерять данные.
+
+![Gentoo Screenshots](https://github.com/hardentoo/gentoo_guide/blob/master/2017-11-25-194856_1920x1080_scrot.png)
+
+Теперь создадим раздел
+
+![Gentoo Screenshots](https://github.com/hardentoo/gentoo_guide/blob/master/2017-11-25-204838_1920x1080_scrot.png)
