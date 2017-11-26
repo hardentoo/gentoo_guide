@@ -137,12 +137,28 @@ Gentoo# dmesg | tail -50
 
 ![Gentoo Screenshots](https://github.com/hardentoo/gentoo_guide/blob/master/2017-11-25-193528_1920x1080_scrot.png)
 
-Мы удалим разделы /dev/sda5, /dev/sda6, /dev/sda7, и в получившемся свободном пространстве создадим раздел.
-
-Но предварительно, мы в файле /etc/conf.d/dmcrypt закомментируем строки, создающие swap раздел, так как нумерация gpt разделов изменится и мы не хотим потерять данные.
+Мы удалим разделы /dev/sda5, /dev/sda6, /dev/sda7, и в получившемся свободном пространстве создадим раздел. Но предварительно, мы в файле /etc/conf.d/dmcrypt закомментируем строки, создающие swap раздел, так как нумерация gpt разделов изменится и мы не хотим потерять данные.
 
 ![Gentoo Screenshots](https://github.com/hardentoo/gentoo_guide/blob/master/2017-11-25-194856_1920x1080_scrot.png)
 
 Теперь создадим раздел
 
 ![Gentoo Screenshots](https://github.com/hardentoo/gentoo_guide/blob/master/2017-11-25-204838_1920x1080_scrot.png)
+
+### Зачистка раздела
+
+Для зачистки можно использовать wipe и shred. Мы используем shred. Чтоб ничего не потерять настоятельно рекомендую прочитать man shred.
+
+```bash
+Gentoo gentoo_guide # shred -vfz -n 10 /dev/sda5                                                                                                                                                                                                                            [0/4]
+shred: /dev/sda5: проход 1/11 (random)…
+shred: /dev/sda5: проход 1/11 (random)…331MiB/98GiB 0%
+shred: /dev/sda5: проход 1/11 (random)…659MiB/98GiB 0%
+```
+
+Здесь
+
+ * -v: показывать прогресс операции
+ * -f: изменить права доступа если необходимо
+ * -z: в конце заполнить нулями, чтобы спрятать shredding
+ * -n: проделать N раз вместо 3 по умолчанию
