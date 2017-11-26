@@ -181,7 +181,7 @@ cryptsetup benchmark
 cryptsetup luksFormat /dev/sda5 --cipher=aes-cbc-essiv:sha256 --key-size=256 --hash=sha256
 ```
 
-После ввода пароля, добавим в один мз слотов дополнительные ключи дешифровки.
+После ввода пароля, добавим в один из слотов дополнительные ключи дешифровки.
 
 Вначале сгенерим ключ и положим его в файл /etc/keys/luks_key_sda5.key
 
