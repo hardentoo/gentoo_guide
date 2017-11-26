@@ -187,9 +187,7 @@ cryptsetup luksFormat /dev/sda5 --cipher=aes-cbc-essiv:sha256 --key-size=256 --h
 cryptsetup luksDump /dev/sda5 
 ```
 
-Теперь добавим в один из слотов дополнительные ключи дешифровки.
-
-Вначале сгенерим ключ и положим его в файл /etc/keys/luks_key_sda5.key
+Теперь добавим в один из слотов дополнительные ключи дешифровки. Вначале сгенерим ключ и положим его в файл /etc/keys/luks_key_sda5.key
 
 ```bash
 dd if=/dev/urandom of=/etc/keys/luks_key_sda5.key bs=1 count=4096
@@ -208,9 +206,7 @@ cryptsetup luksAddKey /dev/sda5 /etc/keys/luks_key_sda5.key
 cryptsetup luksDump /dev/sda5 
 ```
 
-Увидим, что Key Slot 0: ENABLED и Key Slot 1: ENABLED.
-
-Теперь установим права и аттрибуты
+Увидим, что Key Slot 0: ENABLED и Key Slot 1: ENABLED. Теперь установим права и аттрибуты
 
 ```bash
 cd /etc/keys/
@@ -218,17 +214,13 @@ chmod 0400 luks_key_sda5.key
 chattr +i luks_key_sda5.key
 ```
 
-Проверим, что все хорошо ls -l и lsattr.
-
-Подключаем раздел
+Проверим, что все хорошо ls -l и lsattr. Подключаем раздел
 
 ```bash
 cryptsetup luksOpen /dev/sda5 sda5crypt --key-file=/etc/keys/luks_key_sda5.key 
 ```
 
-Ура, у нас теперь есть /dev/mapper/sda5crypt.
-
-Чтобы в дальнейшем ничего не перепутать (помимо sda5 у нас есть еще другие sdaN), создадим symlink, который и будем дальше использовать.
+Ура, у нас теперь есть /dev/mapper/sda5crypt. Чтобы в дальнейшем ничего не перепутать (помимо sda5 у нас есть еще другие sdaN), создадим symlink, который и будем дальше использовать.
 
 ```
 ln -s /dev/mapper/sda5crypt /dev/gentoo
