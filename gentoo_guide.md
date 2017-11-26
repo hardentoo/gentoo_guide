@@ -150,7 +150,7 @@ Gentoo# dmesg | tail -50
 Для зачистки можно использовать wipe и shred. Мы используем shred. Чтоб ничего не потерять настоятельно рекомендую прочитать man shred.
 
 ```bash
-Gentoo gentoo_guide # shred -vfz -n 10 /dev/sda5                                                                                                                                                                                                                            [0/4]
+Gentoo gentoo_guide # shred -vfz -n 10 /dev/sda5
 shred: /dev/sda5: проход 1/11 (random)…
 shred: /dev/sda5: проход 1/11 (random)…331MiB/98GiB 0%
 shred: /dev/sda5: проход 1/11 (random)…659MiB/98GiB 0%
@@ -158,9 +158,9 @@ shred: /dev/sda5: проход 1/11 (random)…659MiB/98GiB 0%
 
 Здесь
 
- * -v: показывать прогресс операции
- * -f: изменить права доступа если необходимо
- * -z: в конце заполнить нулями, чтобы спрятать shredding
- * -n: проделать N раз вместо 3 по умолчанию
+ * -v -- показывать прогресс операции
+ * -f -- изменить права доступа если необходимо
+ * -z -- в конце заполнить нулями, чтобы спрятать shredding
+ * -n -- проделать N раз вместо 3 по умолчанию
 
 ![Gentoo Screenshots](https://github.com/hardentoo/gentoo_guide/blob/master/2017-11-26-111200_1920x1080_scrot.png)
