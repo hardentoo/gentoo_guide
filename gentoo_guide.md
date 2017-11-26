@@ -166,3 +166,54 @@ shred: /dev/sda5: проход 1/11 (random)…659MiB/98GiB 0%
  * -n &mdash; проделать N раз вместо 3 по умолчанию
 
 ![Gentoo Screenshots](https://github.com/hardentoo/gentoo_guide/blob/master/2017-11-26-124630_1920x1080_scrot.png)
+
+#### Шифрование раздела
+
+Чтобы выбрать какие алгоритмы использовать, попробуйте сделать 
+
+```bash
+cryptsetup benchmark
+```
+
+Я выбрал следующие
+
+```bash
+cryptsetup luksFormat /dev/sda5 --cipher=aes-cbc-essiv:sha256 --key-size=256 --hash=sha256
+```
+
+После ввода пароля, добавим в один мз слотов дополнительные ключи дешифровки.
+
+Вначале сгенерим ключ и положим его в файл /etc/keys/luks_key_sda5.key
+
+```bash
+dd if=/dev/urandom of=/etc/keys/luks_key_sda5.key bs=1 count=4096
+
+```
+
+Теперь добавим его к нашему разделу
+
+```bash
+cryptsetup luksAddKey /dev/sda5 --key-file=/etc/keys/luks_key_sda5.key
+```
+
+Посмотрим, что все хорошо
+
+```
+cryptsetup luksDump /dev/sda5 
+```
+
+Теперь установим права и аттрибуты
+
+```bash
+cd /etc/keys/
+chmod 0400 luks_key_sda5.key
+chattr +i luks_key_sda5.key
+```
+
+Подключаем раздел
+
+```bash
+cryptsetup luksOpen /dev/sda5 sda5crypt --key-file=/etc/keys/luks_key_sda5.key 
+```
+
+Ура, у нас теперь есть /dev/mapper/sda5crypt.
