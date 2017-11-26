@@ -162,3 +162,5 @@ shred: /dev/sda5: проход 1/11 (random)…659MiB/98GiB 0%
  * -f: изменить права доступа если необходимо
  * -z: в конце заполнить нулями, чтобы спрятать shredding
  * -n: проделать N раз вместо 3 по умолчанию
+
+![Gentoo Screenshots](https://github.com/hardentoo/gentoo_guide/blob/master/2017-11-26-111200_1920x1080_scrot.png)
