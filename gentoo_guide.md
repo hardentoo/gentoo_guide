@@ -103,6 +103,8 @@ grub2-install --modules="linux crypto search_fs_uuid luks lvm" --target=x86_64-e
 
 ### Готовим раздел для установки
 
+#### Создание раздела
+
 Делаем
 
 ```bash
@@ -145,7 +147,7 @@ Gentoo# dmesg | tail -50
 
 ![Gentoo Screenshots](https://github.com/hardentoo/gentoo_guide/blob/master/2017-11-25-204838_1920x1080_scrot.png)
 
-### Зачистка раздела
+#### Зачистка раздела
 
 Для зачистки можно использовать wipe и shred. Мы используем shred. Чтоб ничего не потерять настоятельно рекомендую прочитать man shred.
 
