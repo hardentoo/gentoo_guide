@@ -208,6 +208,8 @@ cryptsetup luksAddKey /dev/sda5 /etc/keys/luks_key_sda5.key
 cryptsetup luksDump /dev/sda5 
 ```
 
+Увидим, что Key Slot 0: ENABLED и Key Slot 1: ENABLED.
+
 Теперь установим права и аттрибуты
 
 ```bash
@@ -216,6 +218,8 @@ chmod 0400 luks_key_sda5.key
 chattr +i luks_key_sda5.key
 ```
 
+Проверим, что все хорошо ls -l и lsattr.
+
 Подключаем раздел
 
 ```bash
@@ -223,3 +227,9 @@ cryptsetup luksOpen /dev/sda5 sda5crypt --key-file=/etc/keys/luks_key_sda5.key
 ```
 
 Ура, у нас теперь есть /dev/mapper/sda5crypt.
+
+Чтобы в дальнейшем ничего не перепутать (помимо sda5 у нас есть еще другие sdaN), создадим symlink, который и будем дальше использовать.
+
+```
+ln -s /dev/mapper/sda5crypt /dev/gentoo
+```
