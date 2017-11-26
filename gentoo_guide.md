@@ -105,7 +105,7 @@ grub2-install --modules="linux crypto search_fs_uuid luks lvm" --target=x86_64-e
 
 #### Создание раздела
 
-Делаем
+Загрузим необходимые модули ядра, если они еще не загружены. Делаем
 
 ```bash
 Gentoo# modprobe zfs
@@ -149,10 +149,10 @@ Gentoo# dmesg | tail -50
 
 #### Зачистка раздела
 
-Для зачистки можно использовать wipe и shred. Мы используем shred. Чтоб ничего не потерять настоятельно рекомендую прочитать man shred.
+Для зачистки можно использовать wipe и shred. Мы используем shred. Чтоб ничего не потерять настоятельно рекомендую прочитать man shred. Чтобы узнать сколько это заняло времени, напишем перед кодмандой time.
 
 ```bash
-Gentoo gentoo_guide # shred -vfz -n 10 /dev/sda5
+Gentoo gentoo_guide # time shred -vfz -n 10 /dev/sda5
 shred: /dev/sda5: проход 1/11 (random)…
 shred: /dev/sda5: проход 1/11 (random)…331MiB/98GiB 0%
 shred: /dev/sda5: проход 1/11 (random)…659MiB/98GiB 0%
@@ -165,4 +165,4 @@ shred: /dev/sda5: проход 1/11 (random)…659MiB/98GiB 0%
  * -z &mdash; в конце заполнить нулями, чтобы спрятать shredding
  * -n &mdash; проделать N раз вместо 3 по умолчанию
 
-![Gentoo Screenshots](https://github.com/hardentoo/gentoo_guide/blob/master/2017-11-26-111200_1920x1080_scrot.png)
+![Gentoo Screenshots](https://github.com/hardentoo/gentoo_guide/blob/master/2017-11-26-124630_1920x1080_scrot.png)
